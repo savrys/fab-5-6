@@ -1,0 +1,85 @@
+# Директория node_modules
+node_modules/
+
+# Логи
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Директории с зависимостями
+client/node_modules/
+server/node_modules/
+
+# Сборки и билды
+dist/
+build/
+client/build/
+client/dist/
+server/dist/
+
+# Переменные окружения
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE и редакторы
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Логи npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Тестовые покрытия
+coverage/
+*.lcov
+
+# Директории кэша
+.cache/
+.temp/
+.tmp/
+
+# Системные файлы
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# Архивы
+*.zip
+*.tar.gz
+*.rar
+
+# Временные файлы
+*.log
+*.tmp
+*.temp
+
+# Файлы конфигурации, которые могут содержать чувствительные данные
+*.key
+*.pem
+*.crt
+
+# Директории с отчётами
+reports/
+test-results/
+
+# Скриншоты для практики (если не хотите их коммитить, иначе удалите эти строки)
+screenshots/
+*.png
+*.jpg
+*.jpeg
+*.gif
