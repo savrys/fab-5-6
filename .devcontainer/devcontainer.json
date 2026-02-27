@@ -1,0 +1,16 @@
+{
+  "name": "Online Store",
+  "forwardPorts": [3000, 3001],
+  "portsAttributes": {
+    "3000": {
+      "label": "Server API",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "3001": {
+      "label": "React Client",
+      "onAutoForward": "notify",
+      "visibility": "private"
+    }
+  }
+}
