@@ -1,0 +1,48 @@
+.admin-users-page {
+  padding: 2rem;
+  color: #e7eaf3;
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #0f1526;
+    border-radius: 12px;
+    overflow: hidden;
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    th {
+      background: rgba(255,255,255,0.05);
+    }
+
+    button {
+      margin-right: 0.5rem;
+      padding: 0.25rem 0.5rem;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      color: inherit;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(255,255,255,0.1);
+      }
+    }
+
+    select {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.25rem;
+      border-radius: 4px;
+    }
+  }
+}

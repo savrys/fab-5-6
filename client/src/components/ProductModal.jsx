@@ -11,7 +11,7 @@ export default function ProductModal({ open, mode, initialProduct, onClose, onSu
 
   useEffect(() => {
     if (!open) return;
-    setName(initialProduct?.name ?? '');
+    setName(initialProduct?.title ?? '');
     setCategory(initialProduct?.category ?? '');
     setDescription(initialProduct?.description ?? '');
     setPrice(initialProduct?.price != null ? String(initialProduct.price) : '');
@@ -57,7 +57,7 @@ export default function ProductModal({ open, mode, initialProduct, onClose, onSu
 
     onSubmit({
       id: initialProduct?.id,
-      name: trimmedName,
+      name: trimmedName,      // сервер ожидает name
       category: trimmedCategory,
       description: trimmedDesc,
       price: parsedPrice,

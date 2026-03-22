@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import './ProductsPage.scss';
+import { useAuth } from '../../context/AuthContext';
+import { api } from '../../api';
 import ProductsList from '../../components/ProductsList';
 import ProductModal from '../../components/ProductModal';
 import ExchangeRates from '../../components/ExchangeRates';
-import { api } from '../../api';
+import { useNavigate } from 'react-router-dom';
+import './ProductsPage.scss';
 
 export default function ProductsPage() {
+  const { user, hasRole, logout } = useAuth(); // добавляем logout
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -47,11 +51,10 @@ export default function ProductsPage() {
   };
 
   const handleDelete = async (id) => {
-    const ok = window.confirm('Удалить товар?');
-    if (!ok) return;
+    if (!window.confirm('Удалить товар?')) return;
     try {
       await api.deleteProduct(id);
-      setProducts((prev) => prev.filter((p) => p.id !== id));
+      setProducts(prev => prev.filter(p => p.id !== id));
     } catch (err) {
       console.error(err);
       alert('Ошибка удаления товара');
@@ -62,12 +65,10 @@ export default function ProductsPage() {
     try {
       if (modalMode === 'create') {
         const newProduct = await api.createProduct(payload);
-        setProducts((prev) => [...prev, newProduct]);
+        setProducts(prev => [...prev, newProduct]);
       } else {
         const updatedProduct = await api.updateProduct(payload.id, payload);
-        setProducts((prev) =>
-          prev.map((p) => (p.id === payload.id ? updatedProduct : p))
-        );
+        setProducts(prev => prev.map(p => p.id === payload.id ? updatedProduct : p));
       }
       closeModal();
     } catch (err) {
@@ -76,12 +77,39 @@ export default function ProductsPage() {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const canCreate = hasRole(['seller', 'admin']);
+  const canEdit = hasRole(['seller', 'admin']);
+  const canDelete = hasRole(['admin']);
+
   return (
     <div className="page">
       <header className="header">
         <div className="header__inner">
           <div className="brand">Online Store</div>
-          <div className="header__right">React + Express</div>
+          <div className="header__right">
+            {user ? (
+              <>
+                <span style={{ marginRight: '1rem' }}>
+                  {user.first_name} {user.last_name} ({user.role})
+                </span>
+                {hasRole(['admin']) && (
+                  <a href="/admin/users" className="admin-link" style={{ marginRight: '1rem' }}>
+                    Управление пользователями
+                  </a>
+                )}
+                <button onClick={handleLogout} className="btn btn--secondary">
+                  Выйти
+                </button>
+              </>
+            ) : (
+              'Загрузка...'
+            )}
+          </div>
         </div>
       </header>
 
@@ -91,9 +119,11 @@ export default function ProductsPage() {
 
           <div className="toolbar">
             <h1 className="title">Товары</h1>
-            <button className="btn btn--primary" onClick={openCreate}>
-              + Добавить товар
-            </button>
+            {canCreate && (
+              <button className="btn btn--primary" onClick={openCreate}>
+                + Добавить товар
+              </button>
+            )}
           </div>
 
           {loading ? (
@@ -103,6 +133,8 @@ export default function ProductsPage() {
               products={products}
               onEdit={openEdit}
               onDelete={handleDelete}
+              canEdit={canEdit}
+              canDelete={canDelete}
             />
           )}
         </div>
@@ -114,13 +146,15 @@ export default function ProductsPage() {
         </div>
       </footer>
 
-      <ProductModal
-        open={modalOpen}
-        mode={modalMode}
-        initialProduct={editingProduct}
-        onClose={closeModal}
-        onSubmit={handleSubmitModal}
-      />
+      {canCreate && (
+        <ProductModal
+          open={modalOpen}
+          mode={modalMode}
+          initialProduct={editingProduct}
+          onClose={closeModal}
+          onSubmit={handleSubmitModal}
+        />
+      )}
     </div>
   );
 }
