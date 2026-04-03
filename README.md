@@ -1,4 +1,4 @@
-это результат выполнения 2 контрольной работы 1-12 пр
+это результат выполнения 2 контрольной работы 1-18 пр
 Client: https://stunning-waffle-4j95qwrgpvj6fjq96-3001.app.github.dev
 запуск:
 cd /workspaces/fab-5-6/server
