@@ -1,6 +1,6 @@
 {
   "name": "Online Store",
-  "forwardPorts": [3000, 3001],
+  "forwardPorts": [3000, 3001,3002],
   "portsAttributes": {
     "3000": {
       "label": "Server API",
@@ -11,6 +11,11 @@
       "label": "React Client",
       "onAutoForward": "notify",
       "visibility": "private"
+    },
+    "3002": {
+      "label": "Notes App (PWA)",
+      "onAutoForward": "notify",
+      "visibility": "public"
     }
   }
 }

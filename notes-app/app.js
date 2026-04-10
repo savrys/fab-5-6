@@ -4,8 +4,25 @@ const aboutBtn = document.getElementById('about-btn');
 const enablePushBtn = document.getElementById('enable-push');
 const disablePushBtn = document.getElementById('disable-push');
 
-// ⚠️ Если сервер запущен не на localhost:3001, замените адрес
-const socket = io('http://localhost:3002');
+// Динамическое определение URL сервера
+const getServerUrl = () => {
+    if (typeof window !== 'undefined' && window.location.hostname.includes('.app.github.dev')) {
+        const hostname = window.location.hostname;
+        const baseHost = hostname.replace(/-\d+\.app\.github\.dev$/, '') + '-3002.app.github.dev';
+        return `https://${baseHost}`;
+    }
+    return 'http://localhost:3002';
+};
+
+const socket = io('https://stunning-waffle-4j95qwrgpvj6fjq96-3002.app.github.dev');
+
+socket.on('connect', () => {
+    console.log('✅ Socket.IO подключён к серверу');
+});
+
+socket.on('connect_error', (err) => {
+    console.error('❌ Socket.IO ошибка подключения:', err);
+});
 
 function setActiveButton(activeId) {
     [homeBtn, aboutBtn].forEach(btn => btn.classList.remove('active'));
@@ -125,10 +142,10 @@ async function subscribeToPush() {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
     try {
         const registration = await navigator.serviceWorker.ready;
-        // ⚠️ Замените на свой публичный VAPID-ключ
+        const VAPID_PUBLIC_KEY = 'BDQcUQOtrOWKW4fyXdf0EHY7X-pjN9G34rO6OOZnO0IKXXwJ0eSl4nLCLuqGxrSoT-aFceJ6JwDvXlBH0JOVhAo';
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array('ВАШ_ПУБЛИЧНЫЙ_VAPID_КЛЮЧ')
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
         });
         await fetch('/subscribe', {
             method: 'POST',

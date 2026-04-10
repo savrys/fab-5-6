@@ -27,7 +27,11 @@ const reminders = new Map();
 
 const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: { origin: "*", methods: ["GET", "POST"] }
+    cors: { 
+        origin: "*", 
+        methods: ["GET", "POST"],
+        credentials: true
+    }
 });
 
 io.on('connection', (socket) => {
